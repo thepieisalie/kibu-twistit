@@ -1,0 +1,25 @@
+{
+  "name": "kibu-twistit",
+  "version": "1.0.0",
+  "description": "kibu hackathon project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thepieisalie/kibu-twistit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thepieisalie/kibu-twistit/issues"
+  },
+  "homepage": "https://github.com/thepieisalie/kibu-twistit#readme",
+  "dependencies": {
+    "async": "^1.4.2",
+    "chance": "^0.7.7",
+    "keypress": "^0.2.1",
+    "lodash": "^3.10.1"
+  }
+}
