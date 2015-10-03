@@ -17,7 +17,7 @@ var BUZZ = {
   LONG: 'long'
 };
 
-var GYROS_THRESHOLD = 700;
+var GYROS_THRESHOLD = 100;
 
 var POT_THRESHOLD = 5;
 

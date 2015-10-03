@@ -74,6 +74,7 @@ function doTurn(cb) {
   }, turnLimit);
 
   taskEmitter.once('onInputTask', function(inputTask) {
+    ledEmitter.emit('onLed', [false, false, false, false]);
     if (inputTask === randomTask) {
       player.score++;
       lcdEmitter.emit('onLcd', 'Correct!');
