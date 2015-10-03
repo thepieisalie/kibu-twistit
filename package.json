@@ -21,6 +21,7 @@
     "chance": "^0.7.7",
     "keypress": "^0.2.1",
     "lodash": "^3.10.1",
+    "player": "^0.5.1",
     "require-dir": "^0.3.0"
   }
 }
