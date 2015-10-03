@@ -11,6 +11,7 @@ var lightTransition = [];
 lightEmitter.on('onLight', function (isDark) {
   addTransition(isDark);
   if (isLightToDark()) {
+    console.log(isDark);
     taskEmitter.emit('onInputTask', TASKS.COVER_IT);
   }
 });
@@ -23,7 +24,7 @@ function addTransition(isDark) {
 }
 
 function isLightToDark() {
-  return lightTransition[0] && !lightTransition[1];
+  return !lightTransition[0] && lightTransition[1];
 }
 
 module.exports = lightEmitter;

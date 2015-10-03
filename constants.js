@@ -4,7 +4,7 @@ var TASKS = {
   HIT_BTN2: 'hit button 2',
   HIT_BTN3: 'hit button 3',
   HIT_BTN4: 'hit button 4',
-  EXHALE: 'exhale',
+  //EXHALE: 'exhale',
   TWIST_CLOCKWISE: 'twist clockwise',
   TWIST_COUNTER_CLOCKWISE: 'twist counter clockwise',
   TWIST_IT: 'twist it'
@@ -20,7 +20,7 @@ var BUZZ = {
   LONG: 'long'
 };
 
-var GYROS_THRESHOLD = 100;
+var GYROS_THRESHOLD = 700;
 
 var POT_THRESHOLD = 5;
 

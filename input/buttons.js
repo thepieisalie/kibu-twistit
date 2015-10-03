@@ -14,7 +14,7 @@ var pressedKeyToTask = {
 };
 
 buttonEmitter.on('onButton', function(pressedKey) {
-  var task = pressedKeyToTask[pressedKey];
+  var task = pressedKeyToTask[pressedKey+1];
   if (task) {
     return taskEmitter.emit('onInputTask', task);
   }

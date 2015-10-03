@@ -12,6 +12,12 @@ var lcdEmitter = rootRequire('output/lcd');
 var ledEmitter = rootRequire('output/led');
 var constants = rootRequire('constants');
 
+rootRequire('input/buttons');
+rootRequire('input/gyros');
+rootRequire('input/light');
+rootRequire('input/pot');
+rootRequire('input/humidity');
+
 var chance = new Chance();
 
 var GAME_OVER_TYPES = constants.GAME_OVER_TYPES;
@@ -65,6 +71,7 @@ function doTurn(cb) {
   }, turnLimit);
 
   taskEmitter.once('onInputTask', function(inputTask) {
+    console.log('inputTask', inputTask);
     if (inputTask === randomTask) {
       player.score++;
       lcdEmitter.emit('onLcd', 'Correct!');
