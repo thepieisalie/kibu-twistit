@@ -16,7 +16,11 @@ var lcdEmitter = rootRequire('output/lcd');
 var ledEmitter = rootRequire('output/led');
 var constants = rootRequire('constants');
 var mp3player = rootRequire('mp3player');
-var highscore = rootRequire('highscore.json');
+
+var highscore = { value: 0 };
+try {
+  highscore = rootRequire('highscore.json');
+} catch(e) {}
 
 rootRequire('input/buttons');
 rootRequire('input/gyros');
