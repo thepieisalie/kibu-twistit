@@ -94,19 +94,28 @@ function doTurn(cb) {
       player.score++;
       if (player.score > highscore.value) {
         if (announceHighscorePass) {
-          say.speak(null, 'You passed the highscore.');
+          say.speak(null, 'You passed the highscore.', afterAnnounce);
+        } else {
+          afterAnnounce();
         }
-        announceHighscorePass = false;
-        highscore.value = player.score;
+      } else {
+        afterAnnounce();
       }
-      lcdEmitter.emit('onLcd', 'Correct!');
-      clearTimeout(timeLimit);
-      buzzerEmitter.emit('onBuzz', BUZZ.SHORT);
-      turnLimit -= 50;
-      newTaskWaitTime -= 20;
-      mp3player('./assets/music/coin.mp3');
-      setTimeout(cb, newTaskWaitTime);
+      function afterAnnounce() {
+        if (player.score > highscore.value) {
+          announceHighscorePass = false;
+          highscore.value = player.score;
+        }
+        lcdEmitter.emit('onLcd', 'Correct!');
+        clearTimeout(timeLimit);
+        buzzerEmitter.emit('onBuzz', BUZZ.SHORT);
+        turnLimit -= 50;
+        newTaskWaitTime -= 20;
+        mp3player('./assets/music/coin.mp3');
+        setTimeout(cb, newTaskWaitTime);
+      }
     } else {
+      clearTimeout(timeLimit);
       return cb(inputTask);
     }
   });
