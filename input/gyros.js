@@ -4,6 +4,7 @@ var _ = require('lodash');
 
 var taskEmitter = rootRequire('taskEmitter');
 var constants = rootRequire('constants');
+var config = rootRequire('config');
 
 var gyrosEmitter = new events.EventEmitter();
 var TASKS = constants.TASKS;
@@ -51,20 +52,21 @@ function isMoving() {
 
 module.exports = gyrosEmitter;
 
+if (config.env !== 'dev') {
+  var mpu6050 = require('./mpu6050.js');
 
-var mpu6050 = require('./mpu6050.js');
+  // Instantiate and initialize.
+  var mpu = new mpu6050();
+  mpu.initialize();
 
-// Instantiate and initialize.
-var mpu = new mpu6050();
-mpu.initialize();
+  setInterval(function() {
+    mpu.getMotion6(function(err, data) {
+      var g = data.slice(3).map(function(n) { return n / 250; });
+      gyrosEmitter.emit('onGyros', g);
+    });
+  }, 20);
 
-setInterval(function() {
-  mpu.getMotion6(function(err, data) {
-    var g = data.slice(3).map(function(n) { return n / 250; });
-    gyrosEmitter.emit('onGyros', g);
+  process.on('SIGINT', function exit() {
+    mpu.setSleepEnabled(1);
   });
-}, 20);
-
-process.on('SIGINT', function exit() {
-  mpu.setSleepEnabled(1);
-});
+}
