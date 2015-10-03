@@ -1,12 +1,14 @@
+require('./rootRequire');
 var util = require('util');
 
 var Chance = require('chance');
 var async = require('async');
 var _ = require('lodash');
 
-var inputMock = require('./inputMock');
-var taskEmitter = require('./taskEmitter');
-var constants = require('./constants');
+
+var inputMock = rootRequire('inputMock');
+var taskEmitter = rootRequire('taskEmitter');
+var constants = rootRequire('constants');
 
 var chance = new Chance();
 
@@ -32,7 +34,7 @@ function game() {
 function doTurn(cb) {
   var randomTask = chance.pick(_.values(TASKS));
   console.log('------------');
-  console.log(util.format('[index/doTurn] randomTask is: %s.', randomTask));
+  console.log('[index/doTurn] randomTask is:', randomTask);
 
   var timeLimit = setTimeout(function() {
     return cb(GAME_OVER_TYPES.TIMEOUT);
@@ -61,7 +63,7 @@ function onGameEnd(err) {
       console.log('[index/onGameEnd] Game over, wrong task! Score is:', player.score);
       break;
     default:
-      console.log('[index/onGameEnd] Uh oh ', err);
+      console.log('[index/onGameEnd] Uh oh:', err);
   }
   process.exit(0);
 }
