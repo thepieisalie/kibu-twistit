@@ -91,29 +91,30 @@ function doTurn(cb) {
   taskEmitter.once('onInputTask', function(inputTask) {
     ledEmitter.emit('onLed', [false, false, false, false]);
     if (inputTask === randomTask) {
-      player.score++;
-      if (player.score > highscore.value) {
-        if (announceHighscorePass) {
-          say.speak(null, 'You passed the highscore.', afterAnnounce);
+      mp3player('./assets/music/coin.mp3', function() {
+        player.score++;
+        if (player.score > highscore.value) {
+          if (announceHighscorePass) {
+            say.speak(null, 'You passed the highscore.', afterAnnounce);
+          } else {
+            afterAnnounce();
+          }
         } else {
           afterAnnounce();
         }
-      } else {
-        afterAnnounce();
-      }
-      function afterAnnounce() {
-        if (player.score > highscore.value) {
-          announceHighscorePass = false;
-          highscore.value = player.score;
+        function afterAnnounce() {
+          if (player.score > highscore.value) {
+            announceHighscorePass = false;
+            highscore.value = player.score;
+          }
+          lcdEmitter.emit('onLcd', 'Correct!');
+          clearTimeout(timeLimit);
+          buzzerEmitter.emit('onBuzz', BUZZ.SHORT);
+          turnLimit -= 50;
+          newTaskWaitTime -= 20;
+          setTimeout(cb, newTaskWaitTime);
         }
-        lcdEmitter.emit('onLcd', 'Correct!');
-        clearTimeout(timeLimit);
-        buzzerEmitter.emit('onBuzz', BUZZ.SHORT);
-        turnLimit -= 50;
-        newTaskWaitTime -= 20;
-        mp3player('./assets/music/coin.mp3');
-        setTimeout(cb, newTaskWaitTime);
-      }
+      });
     } else {
       clearTimeout(timeLimit);
       return cb(inputTask);
