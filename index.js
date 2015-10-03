@@ -45,7 +45,7 @@ function isGameRunning() {
 }
 
 function game() {
-  lcdEmitter.emit(util.format('onLcd', 'Twist it started in %s mode!', config.env));
+  lcdEmitter.emit('onLcd', util.format('Twist it started in %s mode!', config.env));
   mp3player('./assets/music/welcome.mp3');
   setTimeout(function() {
     say.speak(null, util.format('The current highscore is %s. Good luck.', highscore.value), function () {
@@ -121,7 +121,7 @@ function onGameEnd(err) {
     }
   });
   mp3player('./assets/music/gameOver.mp3', function () {
-    say.speak(null, util.format('Game over. Your score is %s', player.score), function () {
+    say.speak(null, util.format('Game over. Your score is %s, good bye.', player.score), function () {
       setTimeout(function() { process.exit(0); }, 2000);
     });
   });

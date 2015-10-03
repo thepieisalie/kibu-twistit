@@ -24,15 +24,23 @@ setInterval(function () {
 }, 200);
 
 var keyToTask = {
-  l: function () { lightEmitter.emit('onLight', true); },
+  c: function () { lightEmitter.emit('onLight', true); },
   q: function () { buttonEmitter.emit('onButton', 0); },
   w: function () { buttonEmitter.emit('onButton', 1); },
   e: function () { buttonEmitter.emit('onButton', 2); },
   r: function () { buttonEmitter.emit('onButton', 3); },
   h: function () { humidityEmitter.emit('onHumidity', HUMIDITY_THRESHOLD + 1); },
-  j: function () { potEmitter.emit('onPot', true); },
-  b: function () { potEmitter.emit('onPot', false); },
-  g: function () { gyrosEmitter.emit('onGyros', [GYROS_THRESHOLD + 1, 0, 0]); }
+  j: function () {
+    for (var i = 0; i < 5; i++) {
+      potEmitter.emit('onPot', true);
+    }
+  },
+  b: function () {
+    for (var i = 0; i < 5; i++) {
+      potEmitter.emit('onPot', false);
+    }
+  },
+  t: function () { gyrosEmitter.emit('onGyros', [GYROS_THRESHOLD + 1, 0, 0]); }
 };
 
 process.stdin.on('keypress', function (ch, key) {
