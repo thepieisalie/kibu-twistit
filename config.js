@@ -1,4 +1,4 @@
-var env = process.env.NODE_ENV || 'dev';
+var env = process.env.NODE_ENV;
 
 var config = {
   env: env
