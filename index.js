@@ -12,13 +12,13 @@ var lcdEmitter = rootRequire('output/lcd');
 var ledEmitter = rootRequire('output/led');
 var constants = rootRequire('constants');
 
+var mp3player = rootRequire('mp3player');
+
 rootRequire('input/buttons');
 rootRequire('input/gyros');
 rootRequire('input/light');
 rootRequire('input/pot');
 rootRequire('input/humidity');
-
-var chance = new Chance();
 
 var GAME_OVER_TYPES = constants.GAME_OVER_TYPES;
 var TASKS = constants.TASKS;
@@ -40,20 +40,13 @@ function game() {
   async.whilst(isGameRunning, doTurn, onGameEnd);
 }
 
-function isHitButtonTask(task) {
-  return _.includes([
-    TASKS.HIT_BTN1,
-    TASKS.HIT_BTN2,
-    TASKS.HIT_BTN3,
-    TASKS.HIT_BTN4,
-  ], task);
-}
-
 function doTurn(cb) {
+  var chance = new Chance();
   var randomTask = chance.pick(_.values(TASKS));
-  if (isHitButtonTask(randomTask)) {
+  mp3player('./assets/music/' + randomTask + '.mp3');
+  if (TASKS.HIT_BTN === randomTask) {
     lcdEmitter.emit('onLcd', 'Task: how many LED are on?');
-    var numberOfLeds = +randomTask.slice(-1);
+    var numberOfLeds = chance.pick([1, 2, 3, 4]);
     var ledIndexes = chance.pick([0, 1, 2, 3], numberOfLeds);
     if (!_.isArray(ledIndexes)) {
       ledIndexes = [ledIndexes];
@@ -61,6 +54,16 @@ function doTurn(cb) {
     var turnedOnLeds = [0, 0, 0, 0].map(function(item, index) {
       return (_.includes(ledIndexes, index));
     });
+    console.log('turnedOnLeds', turnedOnLeds);
+
+    var buttonNum = 0;
+    turnedOnLeds.forEach(function (item) {
+      if (item) {
+        return buttonNum++;
+      }
+    });
+    randomTask += '' + buttonNum;
+    console.log('randomTask', randomTask);
     ledEmitter.emit('onLed', turnedOnLeds);
   } else {
     lcdEmitter.emit('onLcd', 'Task: ' + randomTask);
@@ -71,7 +74,6 @@ function doTurn(cb) {
   }, turnLimit);
 
   taskEmitter.once('onInputTask', function(inputTask) {
-    console.log('inputTask', inputTask);
     if (inputTask === randomTask) {
       player.score++;
       lcdEmitter.emit('onLcd', 'Correct!');
@@ -79,6 +81,7 @@ function doTurn(cb) {
       buzzerEmitter.emit('onBuzz', BUZZ.SHORT);
       turnLimit -= 50;
       newTaskWaitTime -= 20;
+      mp3player('./assets/music/coin.mp3');
       setTimeout(cb, newTaskWaitTime);
     } else {
       return cb(inputTask);
@@ -88,6 +91,7 @@ function doTurn(cb) {
 
 function onGameEnd(err) {
   gameRunning = false;
+  mp3player('./assets/music/gameOver.mp3');
   buzzerEmitter.emit('onBuzz', BUZZ.LONG);
   switch (err) {
     case GAME_OVER_TYPES.TIMEOUT:
@@ -96,7 +100,7 @@ function onGameEnd(err) {
     default:
       lcdEmitter.emit('onLcd', util.format('Game over! You did "%s", Score is: %s', err, player.score));
   }
-  process.exit(0);
+  setTimeout(function() { process.exit(0); }, 7000);
 }
 
 game();

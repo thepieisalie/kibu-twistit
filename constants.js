@@ -1,13 +1,10 @@
 var TASKS = {
-  COVER_IT: 'cover it',
-  HIT_BTN1: 'hit button 1',
-  HIT_BTN2: 'hit button 2',
-  HIT_BTN3: 'hit button 3',
-  HIT_BTN4: 'hit button 4',
+  COVER_IT: 'coverIt',
+  HIT_BTN: 'hitButton',
   //EXHALE: 'exhale',
-  TWIST_CLOCKWISE: 'twist clockwise',
-  TWIST_COUNTER_CLOCKWISE: 'twist counter clockwise',
-  TWIST_IT: 'twist it'
+  TWIST_CLOCKWISE: 'twistClockwise',
+  TWIST_COUNTER_CLOCKWISE: 'twistCounterClockwise',
+  TWIST_IT: 'twistIt'
 };
 
 var GAME_OVER_TYPES = {
