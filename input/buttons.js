@@ -46,7 +46,7 @@ setInterval(function() {
   }
 
   buttonState = arr;
-}, 1);
+}, 20);
 
 process.on('SIGINT', function exit() {
   buttonOut.unexport();

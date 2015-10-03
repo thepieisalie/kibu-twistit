@@ -37,7 +37,7 @@ var buttonDown = false;
 var clkOldState = 1;
 var dtOldState = 1;
 
-setInterval(function() {
+setTimeout(function checker() {
   var swState = potSW.readSync();
   if (swState && buttonDown) {
     buttonDown = false;
@@ -63,7 +63,9 @@ setInterval(function() {
 
   clkOldState = clkState;
   dtOldState = dtState;
-}, 0);
+
+  setTimeout(checker);
+});
 
 process.on('SIGINT', function exit() {
   potCLK.unexport();

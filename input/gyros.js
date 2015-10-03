@@ -63,7 +63,7 @@ setInterval(function() {
     var g = data.slice(3).map(function(n) { return n / 250; });
     gyrosEmitter.emit('onGyros', g);
   });
-}, 1);
+}, 20);
 
 process.on('SIGINT', function exit() {
   mpu.setSleepEnabled(1);
