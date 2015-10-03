@@ -2,6 +2,7 @@ var events = require('events');
 
 var taskEmitter = rootRequire('taskEmitter');
 var constants = rootRequire('constants');
+var config = rootRequire('config');
 
 var TASKS = constants.TASKS;
 var lightEmitter = new events.EventEmitter();
@@ -29,14 +30,15 @@ function isLightToDark() {
 
 module.exports = lightEmitter;
 
+if (config.env !== 'dev') {
+  var Gpio = require('onoff').Gpio;
+  var photo  = new Gpio(4, 'in', 'both');
 
-var Gpio = require('onoff').Gpio;
-var photo  = new Gpio(4, 'in', 'both');
+  photo.watch(function(err, value) {
+    lightEmitter.emit('onLight', value);
+  });
 
-photo.watch(function(err, value) {
-  lightEmitter.emit('onLight', value);
-});
-
-process.on('SIGINT', function exit() {
-  photo.unexport();
-});
+  process.on('SIGINT', function exit() {
+    photo.unexport();
+  });
+}

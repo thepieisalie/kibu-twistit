@@ -5,7 +5,9 @@ var Chance = require('chance');
 var async = require('async');
 var _ = require('lodash');
 
-// rootRequire('inputMock');
+var config = rootRequire('config');
+if (config.env === 'dev') { rootRequire('inputMock'); }
+
 var taskEmitter = rootRequire('taskEmitter');
 var buzzerEmitter = rootRequire('output/buzzer');
 var lcdEmitter = rootRequire('output/lcd');
@@ -35,7 +37,7 @@ function isGameRunning() {
 }
 
 function game() {
-  lcdEmitter.emit('onLcd', 'Twist it started!');
+  lcdEmitter.emit(util.format('onLcd', 'Twist it started in %s mode!', config.env));
   gameRunning = true;
   async.whilst(isGameRunning, doTurn, onGameEnd);
 }
