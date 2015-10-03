@@ -107,6 +107,7 @@ function doTurn(cb) {
             announceHighscorePass = false;
             highscore.value = player.score;
           }
+          console.log('Score: ' + player.score);
           lcdEmitter.emit('onLcd', 'Correct!');
           clearTimeout(timeLimit);
           buzzerEmitter.emit('onBuzz', BUZZ.SHORT);
