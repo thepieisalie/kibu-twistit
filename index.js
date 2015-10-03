@@ -5,7 +5,7 @@ var Chance = require('chance');
 var async = require('async');
 var _ = require('lodash');
 
-rootRequire('inputMock');
+// rootRequire('inputMock');
 var taskEmitter = rootRequire('taskEmitter');
 var buzzerEmitter = rootRequire('output/buzzer');
 var lcdEmitter = rootRequire('output/lcd');

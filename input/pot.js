@@ -24,3 +24,50 @@ potEmitter.on('onPot', function (isClockwise) {
 });
 
 module.exports = potEmitter;
+
+
+var Gpio = require('onoff').Gpio;
+
+var potCLK = new Gpio(16, 'in', 'both');
+var potDT = new Gpio(20, 'in', 'both');
+var potSW = new Gpio(21, 'in', 'both');
+
+var buttonDown = false;
+
+var clkOldState = 1;
+var dtOldState = 1;
+
+setInterval(function() {
+  var swState = potSW.readSync();
+  if (swState && buttonDown) {
+    buttonDown = false;
+    //console.log('Button up');
+  } else if (!swState && !buttonDown) {
+    buttonDown = true;
+    //console.log('Button down');
+  }
+
+  var clkState = potCLK.readSync();
+  var dtState = potDT.readSync();
+
+  if ((clkOldState && !clkState) || (dtOldState && !dtState)) {
+    var sum = '' + clkOldState + dtOldState + clkState + dtState;
+    if (sum === '1101' || sum === '0100' || sum === '0010' || sum === '1011') {
+      potEmitter.emit('onPot', true);
+      //console.log('CW');
+    } else if (sum === '1110' || sum === '0111' || sum === '0001' || sum === '1000') {
+      potEmitter.emit('onPot', false);
+      //console.log('CCW');
+    }
+  }
+
+  clkOldState = clkState;
+  dtOldState = dtState;
+}, 0);
+
+process.on('SIGINT', function exit() {
+  potCLK.unexport();
+  potDT.unexport();
+  potSW.unexport();
+  process.exit();
+});

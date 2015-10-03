@@ -50,3 +50,21 @@ function isMoving() {
 }
 
 module.exports = gyrosEmitter;
+
+
+var mpu6050 = require('./mpu6050.js');
+
+// Instantiate and initialize.
+var mpu = new mpu6050();
+mpu.initialize();
+
+setInterval(function() {
+  mpu.getMotion6(function(err, data) {
+    var g = data.slice(3).map(function(n) { return n / 250; });
+    gyrosEmitter.emit('onGyros', { x: g[0], y: g[1], z: g[2] });
+  });
+}, 1);
+
+process.on('SIGINT', function exit() {
+  mpu.setSleepEnabled(1);
+});

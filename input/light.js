@@ -27,3 +27,15 @@ function isLightToDark() {
 }
 
 module.exports = lightEmitter;
+
+
+var Gpio = require('onoff').Gpio;
+var photo  = new Gpio(4, 'in', 'both');
+
+photo.watch(function(err, value) {
+  lightEmitter.emit('onLight', value);
+});
+
+process.on('SIGINT', function exit() {
+  photo.unexport();
+});
