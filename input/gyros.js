@@ -8,8 +8,8 @@ var constants = rootRequire('constants');
 var gyrosEmitter = new events.EventEmitter();
 var TASKS = constants.TASKS;
 var GYROS_THRESHOLD = constants.GYROS_THRESHOLD;
+var MAX_GYROS_STATES = constants.MAX_GYROS_STATES;
 
-var maxGyrosStates = 10;
 var gyrosStates = { x: [], y: [], z: [] };
 
 gyrosEmitter.on('onGyros', function(gyrosState) {
@@ -32,7 +32,7 @@ function addGyros(gyrosState) {
 
 function isMoving() {
   var allDiff = 0;
-  if (gyrosStates.x.length < 9) {
+  if (gyrosStates.x.length < MAX_GYROS_STATES) {
     return false;
   }
   _.keys(gyrosStates).forEach(function (key) {

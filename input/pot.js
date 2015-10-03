@@ -1,7 +1,5 @@
 var events = require('events');
 
-var _ = require('lodash');
-
 var taskEmitter = rootRequire('taskEmitter');
 var constants = rootRequire('constants');
 
